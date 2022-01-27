@@ -1,6 +1,6 @@
 ---
 title: "Class Reference"
-author: "Student name"
+author: "Devon Milley"
 output:
   html_document:
     theme: cerulean
@@ -18,3 +18,54 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction
 
 Consider this my personal guide to the commands and functions you will learn. In general, when you come across an R command or function that you want to remember, put it in here along with a description of what it does and when you'd use it.
+
+## To set a working directory
+
+1. Select the folder you want to set as your "home"
+2. Click the "more" button in the files panel of RStudio
+3. Click "Set as working directory"
+
+## Installing packages
+
+install.packages("name of package")
+
+## Loading libraries
+
+library(name of library)
+
+## To create a code block in a notebook
+
+1. three backticks (the key to the left of the one) + {r}
+2. three backticks
+
+## To run code in a code block
+
+Use the green triangle in the top right corner of a code block
+
+## To read an rds file
+
+variable name <- read_rds("file name")
+
+## Glimpse data function
+
+glimpse(variable name)
+gives you a sense of the data, some of the values in each coumn, and the data types of each column
+
+## head function
+
+head(variable name)
+shows the first six rows of data
+
+
+## From Pre lab 1
+**Task** Run the following codeblock to group the ppp_maryland_loans dataframe by the county for each loan, and then count the number of loans in that group.
+
+%>% = and then
+
+```{r}
+ppp_maryland_loans %>% #start with this dataset
+  group_by(project_county_name) %>% #group by this variable
+  summarise( # summarise function
+    count_loans = n() #n() is counting
+  )
+```
