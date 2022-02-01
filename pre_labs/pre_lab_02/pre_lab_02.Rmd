@@ -76,7 +76,7 @@ maryland_ppp %>%
 )  %>% arrange(desc(percent_payroll))
 ```
 What is the payroll proceeds percentage for the first result? Put your answer in the space below.
-**Answer**
+**Answer** 100
 
 
 ### Task 7: Mutate with ordering, part 2
@@ -91,7 +91,7 @@ maryland_ppp %>%
 )  %>% arrange(percent_payroll, desc(amount))
 ```
 What is the payroll proceeds percentage for the first result? Put your answer in the space below.
-**Answer**
+**Answer** 0
 
 
 ### Task 8: Create a new column using if/else
@@ -121,6 +121,7 @@ mutate(
   jobs_retained_category = case_when(
     jobs_retained < 10 ~ 'under_10',
     jobs_retained >= 10 & jobs_retained < 25 ~ '10_to_25',
+    jobs_retained >= 25 & jobs_retained < 50 ~ '25_to_50',
     jobs_retained >= 50 & jobs_retained < 100 ~ '50_to_100',
     jobs_retained >= 100 & jobs_retained < 250 ~ '100_to_250',
     jobs_retained >= 250 & jobs_retained < 500 ~ '250_to_500',

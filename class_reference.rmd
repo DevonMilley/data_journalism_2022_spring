@@ -46,6 +46,12 @@ Use the green triangle in the top right corner of a code block
 
 variable name <- read_rds("file name")
 
+## To read a csv file
+
+variable name <- read_csv("file name")
+
+this command can read a zipped file.
+
 ## Glimpse data function
 
 glimpse(variable name)
@@ -85,3 +91,45 @@ wv_summary <- wv_ppp_loans %>%
     max_loan_amount = max(amount)
   )
 ```
+
+## Summarise
+Summarise allows us to choose what parts of the data we want to look at
+
+## Arrange
+Arrange allows us to organize how we want to look at the data
+
+## Mutate
+Mutate creates new variables/columns
+
+## Select
+Select allows us to choose which columns we want to look at
+
+## if_else
+```{r}
+# if/else example
+maryland_with_in_out <- maryland_ppp %>%
+  mutate(
+    in_out = if_else(
+        servicing_lender_state == 'MD', "IN", "OUT"
+      )
+  )
+```
+if lender state is maryland, assign value of in; if lender state is not maryland, assign value of out
+
+## case_when
+```{r}
+# case_when example
+maryland_jobs_categories <- maryland_ppp %>%
+mutate(
+  jobs_retained_category = case_when(
+    jobs_retained < 10 ~ 'under_10',
+    jobs_retained >= 10 & jobs_retained < 25 ~ '10_to_25',
+    jobs_retained >= 25 & jobs_retained < 50 ~ '25_to_50',
+    jobs_retained >= 50 & jobs_retained < 100 ~ '50_to_100',
+    jobs_retained >= 100 & jobs_retained < 250 ~ '100_to_250',
+    jobs_retained >= 250 & jobs_retained < 500 ~ '250_to_500',
+    jobs_retained == 500 ~ '500'
+  )
+)
+```
+This code creates a new column called jobs_retained_cateogry. Case_when says that when the number of jobs retained falls into a certin category, it puts in the green code into the new column.
