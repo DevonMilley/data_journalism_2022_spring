@@ -69,3 +69,19 @@ ppp_maryland_loans %>% #start with this dataset
     count_loans = n() #n() is counting
   )
 ```
+
+## From Lab 1
+**A7** There is a huge range in the loan amounts, but the mean and median loan amounts are much closer to the minimum amount. This probably means that there were a small number of businesses that received the vast amount of the total loan money. 
+
+```{r}
+# Write the code to produce your answer here
+wv_summary <- wv_ppp_loans %>%
+  summarise(
+    count_loans = n(),
+    total_loans_amount = sum(amount),
+    mean_loan_amount = mean(amount),
+    median_loan_amount = median(amount),
+    min_loan_amount = min(amount),
+    max_loan_amount = max(amount)
+  )
+```
