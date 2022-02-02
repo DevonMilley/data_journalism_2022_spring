@@ -51,6 +51,7 @@ variable name <- read_rds("file name")
 variable name <- read_csv("file name")
 
 this command can read a zipped file.
+read_csv, is a tidyverse function; read.csv is an R function.
 
 ## Glimpse data function
 
