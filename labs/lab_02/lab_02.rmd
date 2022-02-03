@@ -94,6 +94,7 @@ undisbursed_greater_zero %>%
 # Write the code to produce your answer here
 west_virginia_ppp %>%
   mutate(Month = floor_date(date_approved, "month")) %>%
+  filter() %>% #HOW DO I FILTER BY MONTH
   group_by(Month) %>%
   summarise(total = n()) %>%
   arrange(desc(total), desc(Month))
