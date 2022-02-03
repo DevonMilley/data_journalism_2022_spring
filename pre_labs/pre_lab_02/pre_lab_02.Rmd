@@ -191,13 +191,13 @@ What is the datatype for `date_approved` (it's just to the right of the column n
 
 ```{r}
 lubridate_maryland_ppp <- maryland_ppp_sample %>% mutate(
-    CleanDate = ymd_hms(date_approved)
+    CleanDate = ymd(date_approved)
 )
 glimpse(lubridate_maryland_ppp)
 ```
 What is the datatype for `date_approved` (it's just to the right of the column name)? What is the datatype for `CleanDate`?
 Put your answers in the space below.
-**Answer** date_approved: chr, CleanDate: dttm
+**Answer** date_approved: date, CleanDate: date
 
 
 ### Task 15: Load data using read_csv

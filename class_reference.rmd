@@ -134,3 +134,25 @@ mutate(
 )
 ```
 This code creates a new column called jobs_retained_cateogry. Case_when says that when the number of jobs retained falls into a certin category, it puts in the green code into the new column.
+
+## Filtering
+filter(column_name operator criteria)
+
+ex. filter(jobs_retained == 5)
+filter(jobs_retained <= 20)
+>=
+!=
+
+to do multiple filters:
+& = and (ampersand)
+| = or (vertical line)
+
+## changing cases
+
+data_name %>% mutate(project_city = string_to_upper(project_city))
+data_name %>% mutate(project_city = string_to_lower(project_city))
+
+to make it permanent, save to a new variable.
+
+## nrow(data)
+gives you the number of rows in your data
