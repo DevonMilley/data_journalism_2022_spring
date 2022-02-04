@@ -84,7 +84,7 @@ undisbursed_greater_zero %>%
 ```
 
 **Q3** What are some potential reasons why a loan might not be paid out? What questions does that circumstance raise for you?
-**A3** 
+**A3** The lender may not have paid out the loan because the borrower did not use the loan for what they said they would, or the lender doesn't have enough money to lend. Either of those circumstances makes me think that either the lender or borrower is untrustworthy. 
 
 
 **Q4** Which month in 2021 had the most loans approved?
@@ -92,18 +92,20 @@ undisbursed_greater_zero %>%
 
 ```{r}
 # Write the code to produce your answer here
-west_virginia_ppp %>%
+lubridate_wv_ppp %>%
   mutate(Month = floor_date(date_approved, "month")) %>%
-  mutate(Year = floor_date(date_approved, "year")) %>%
-  group_by(Month, Year) %>%
+  group_by(Month) %>%
   summarise(total = n()) %>%
-  arrange(desc(total))
+  arrange(desc(Month), desc(total))
 ```
 
 **Q5** How many loans went to West Virginia applicants that listed the maximum number of jobs retained (500)? Which one had the earliest approved date?
-**A5** [write your answer here]
+**A5** 10, April 8, 2020
 
 ```{r}
 # Write the code to produce your answer here
+west_virginia_ppp %>%
+  filter(jobs_retained == 500) %>%
+  arrange(date_approved)
 
 ```
