@@ -94,10 +94,10 @@ undisbursed_greater_zero %>%
 # Write the code to produce your answer here
 west_virginia_ppp %>%
   mutate(Month = floor_date(date_approved, "month")) %>%
-  filter() %>% #HOW DO I FILTER BY MONTH
-  group_by(Month) %>%
+  mutate(Year = floor_date(date_approved, "year")) %>%
+  group_by(Month, Year) %>%
   summarise(total = n()) %>%
-  arrange(desc(total), desc(Month))
+  arrange(desc(total))
 ```
 
 **Q5** How many loans went to West Virginia applicants that listed the maximum number of jobs retained (500)? Which one had the earliest approved date?
