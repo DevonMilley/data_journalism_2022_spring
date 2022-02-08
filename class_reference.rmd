@@ -106,6 +106,7 @@ Mutate creates new variables/columns
 Select allows us to choose which columns we want to look at
 
 ## if_else
+prom prelab 2
 ```{r}
 # if/else example
 maryland_with_in_out <- maryland_ppp %>%
@@ -118,6 +119,7 @@ maryland_with_in_out <- maryland_ppp %>%
 if lender state is maryland, assign value of in; if lender state is not maryland, assign value of out
 
 ## case_when
+from prelab 2
 ```{r}
 # case_when example
 maryland_jobs_categories <- maryland_ppp %>%
@@ -156,3 +158,27 @@ to make it permanent, save to a new variable.
 
 ## nrow(data)
 gives you the number of rows in your data
+
+## guess_max() 
+
+from prelab 3
+the guess_max() function — used as an argument when reading in files — uses the first however many rows to set the data type. It's used to look at datasets that have a loooot of rows of data (like a million).
+```{r}
+ppp_maryland_loans <- read_csv("ppp_loans_md.csv.zip", guess_max=10)
+
+```
+
+## problems()
+
+The problems function checks for problems that occurred when loading data. The number of problems equals the number of rows in the tibble
+
+### Changing a data type
+**Task from prelab 3** Run the following codeblock to change the data type of the "id" field from a number (dbl) to a character, and then glimpse the data, to see the change. Add a description of what this code does to your reference notebook.
+
+```{r}
+ppp_maryland_loans <- ppp_maryland_loans %>%
+  mutate(id = as.character(id))
+
+glimpse(ppp_maryland_loans)
+```
+
