@@ -182,3 +182,14 @@ ppp_maryland_loans <- ppp_maryland_loans %>%
 glimpse(ppp_maryland_loans)
 ```
 
+## From Prelab 3
+**Task** Run the following codeblock to create a new column called "month_year_approved" that extracts the month and year from the "date_approved" column.  Group by the new "month_year_approved" column, count, and sort by "month_year_approved". How many loans are there in the data for October 2020? Answer below. Add a description of what this code does to your reference notebook.
+```{r}
+ppp_maryland_loans %>%
+  mutate(month_year_approved = floor_date(date_approved, "month")) %>%
+  group_by(month_year_approved) %>%
+   summarise(
+    count=n()
+  ) %>%
+  arrange(month_year_approved)
+```
