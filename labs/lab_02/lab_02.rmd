@@ -92,7 +92,8 @@ undisbursed_greater_zero %>%
 
 ```{r}
 # Write the code to produce your answer here
-lubridate_wv_ppp %>%
+west_virginia_ppp %>%
+  filter(date_approved > "2020-12-31") %>%
   mutate(Month = floor_date(date_approved, "month")) %>%
   group_by(Month) %>%
   summarise(total = n()) %>%
