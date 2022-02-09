@@ -193,3 +193,91 @@ ppp_maryland_loans %>%
   ) %>%
   arrange(month_year_approved)
 ```
+
+### clean_names()
+
+This function cleams un column names
+
+**Task from prelab 3** Run the following codeblock to use the `clean_names()` function from janitor to standardize column names. How does the function change the name of the column "1_id"? Answer below. Add a description of what this code does to your reference notebook.
+**Answer** The function renamed the "1_id" column to be "x1_id." 
+```{r}
+# cleaning function
+cleaned_arnold_md_loans <- arnold_md_loans %>%
+  clean_names()
+
+# display the cleaned dataset
+cleaned_arnold_md_loans
+```
+
+## rename()
+
+This function allows you to rename a column
+```{r}
+# cleaning function from prelab 3
+cleaned_arnold_md_loans <- arnold_md_loans %>%
+  clean_names() %>%
+  rename(id = x1_id)
+```
+
+## get_dupes()
+
+gets duplicate rows in dataset
+
+### Check for duplicate rows and remove them
+**Task from prelab 3** Run the following codeblock to use distinct() to get rid of duplicate rows. How many rows does the new dataframe have? Answer below. Add a description of what this code does to your reference notebook.
+**Answer** 5 rows
+
+```{r}
+# cleaning function
+cleaned_arnold_md_loans <- arnold_md_loans %>%
+  clean_names() %>%
+  rename(id = x1_id) %>%
+  mutate(amount = as.numeric(amount)) %>%
+  distinct()
+
+
+# display the cleaned dataset
+cleaned_arnold_md_loans
+
+```
+
+### Clean up ZIP code
+**Task from prelab 3** Run the following codeblock to use str_sub() to convert the ZIP codes that have nine digits to five digits, standardizing the field. Add a description of what this code does to your reference notebook.
+```{r}
+# cleaning function
+cleaned_arnold_md_loans <- arnold_md_loans %>%
+  clean_names() %>%
+  rename(id = x1_id) %>%
+  mutate(amount = as.numeric(amount)) %>%
+  distinct() %>%
+  mutate(zip = str_sub(zip, start=1L, end=5L))
+
+
+# display the cleaned dataset
+cleaned_arnold_md_loans
+
+```
+
+### Clean up city field more with case_when()
+**Task from prelab 3** Run the following codeblock to use case_when() to fix misspellings of Arnold in the "city" field using both the exact match method and the str_detect() method. How many mispellings of Arnold remain after running this code? Answer below. Add a description of what this code does to your reference notebook.
+**Answer** zero misspellings
+```{r}
+# cleaning function
+cleaned_arnold_md_loans <- arnold_md_loans %>%
+  clean_names() %>%
+  rename(id = x1_id) %>%
+  mutate(amount = as.numeric(amount)) %>%
+  distinct() %>%
+  mutate(zip = str_sub(zip, start=1L, end=5L)) %>%
+  mutate(city = str_to_title(city)) %>%
+  mutate(city = case_when(
+    city == "Anold" ~ "Arnold",
+    str_detect(city,"^Arnl") ~ "Arnold",
+    TRUE ~ city
+  ))
+
+
+# display the cleaned dataset
+cleaned_arnold_md_loans
+
+```
