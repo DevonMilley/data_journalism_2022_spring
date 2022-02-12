@@ -116,7 +116,7 @@ A3:
 # First, create a dataframe that only has loans to those five companies
 wv_spouse_business_ppp <- wv_ppp_loans %>% 
   #arrange(name)
-  filter(name == "DM MOTOR, INC" & name == "DUTCH MILLER CHEVROLET, INC." & name == "")
+  filter(name == "DM MOTOR, INC" | name == "DUTCH MILLER CHEVROLET, INC." | name == "DUTCH MILLER OF CHARLESTON, INC" | name == "DUTCH MILLER OF CHARLOTTE, INC" | name == "DUTCH MILLER SUBARU, INC")
 # Second, use that newly created dataframe to calculate total loan amount and percentage forgiven for those companies
 
 ```
