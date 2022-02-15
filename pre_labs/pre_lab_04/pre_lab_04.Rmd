@@ -99,7 +99,7 @@ maryland_zcta <- read_csv('data/maryland_zcta.csv')
 
 ### Task 9: Join ZCTA to PPP Data
 **Task** Join the ZCTA data to the our PPP & NAICS data. What's the error message you get? What do you think it means? Add a description of what this code does to your reference notebook.
-**Answer**
+**Answer** Error: Can't join on `x$zip` x `y$zip` because of incompatible types. ℹ `x$zip` is of type <character>>. ℹ `y$zip` is of type <double>>.
 
 ```{r}
 # join on zip - but there's a problem
@@ -114,7 +114,7 @@ maryland_zcta <- maryland_zcta %>% mutate(across(ZCTA5N, as.character))
 
 ### Task 11: Join ZCTA to PPP Data and Check
 **Task** Join the ZCTA data to the our PPP & NAICS data. Examine the columns in the new dataframe - does every row have demographic data? HINT: Use the >> character to browse columns
-**Answer**
+**Answer** Lots of demograpihc data is missing because the zip codes in the PPP data were not all five digits, meaning they didn't match with the zcta.
 
 ```{r}
 maryland_ppp_with_naics_and_demographics <- maryland_ppp_with_naics %>% left_join(maryland_zcta, by=c("zip"="ZCTA5N"))
@@ -123,7 +123,7 @@ View(maryland_ppp_with_naics_and_demographics)
 
 ### Task 12: Make a Zip5 Column, Join ZCTA to PPP Data and Check Again
 **Task** Make a zip5 column and join again. Examine the new dataframe - now does every row have demographic data?
-**Answer**
+**Answer** yes
 
 ```{r}
 # make a zip5 column and redo the join
