@@ -99,7 +99,7 @@ maryland_zcta <- read_csv('data/maryland_zcta.csv')
 
 ### Task 9: Join ZCTA to PPP Data
 **Task** Join the ZCTA data to the our PPP & NAICS data. What's the error message you get? What do you think it means? Add a description of what this code does to your reference notebook.
-**Answer** Error: Can't join on `x$zip` x `y$zip` because of incompatible types. ℹ `x$zip` is of type <character>>. ℹ `y$zip` is of type <double>>.
+**Answer** Error: Can't join on `x$zip` x `y$zip` because of incompatible types. ℹ `x$zip` is of type <character>>. ℹ `y$zip` is of type <double>>. The error means that the datasets can't be joined where we specified because those two columns' data types don't match. 
 
 ```{r}
 # join on zip - but there's a problem
@@ -114,7 +114,7 @@ maryland_zcta <- maryland_zcta %>% mutate(across(ZCTA5N, as.character))
 
 ### Task 11: Join ZCTA to PPP Data and Check
 **Task** Join the ZCTA data to the our PPP & NAICS data. Examine the columns in the new dataframe - does every row have demographic data? HINT: Use the >> character to browse columns
-**Answer** Lots of demograpihc data is missing because the zip codes in the PPP data were not all five digits, meaning they didn't match with the zcta.
+**Answer** Lots of demographic data is missing because the zip codes in the PPP data were not all five digits, meaning they didn't match with the zcta.
 
 ```{r}
 maryland_ppp_with_naics_and_demographics <- maryland_ppp_with_naics %>% left_join(maryland_zcta, by=c("zip"="ZCTA5N"))
@@ -133,7 +133,7 @@ maryland_ppp_with_naics_and_demographics <- maryland_ppp_with_naics %>% left_joi
 
 ### Task 13: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic Black population, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer** number of loans that went to ZCTAs with more than 50% non-Hispanic Black population: 41,968; average loan amount: \$55,546.84; median loan amount: \$19,949
 
 ```{r}
 # zcta with > 50% non-Hispanic Black population
@@ -148,7 +148,7 @@ maryland_ppp_with_naics_and_demographics %>%
 
 ### Task 14: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic white population, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer** number of loans that went to ZCTAs with more than 50% non-Hispanic white population: 112,056; average loan amount: \$89,194.67; median loan amount: \$20,833
 
 ```{r}
 # zcta with > 50% non-Hispanic white population
@@ -162,7 +162,7 @@ maryland_ppp_with_naics_and_demographics %>%
 
 ### Task 15: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic Black population, grouped by rural or urban status, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer** number of PPP loans that went to ZCTAs with more than 50% non-Hispanic Black population, rural: 145; average loan amount: \$44,815.22; median loan amount: \$19,064.57; number of PPP loans that went to ZCTAs with more than 50% non-Hispanic Black population, urban: 41,823; average loan amount: \$55,584.05; median loan amount: \$19,950
 
 ```{r}
 # zcta with > 50% non-Hispanic Black population grouped by rural/urban
@@ -177,7 +177,7 @@ maryland_ppp_with_naics_and_demographics %>%
 
 ### Task 16: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic white population, grouped by rural or urban status, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer** number of PPP loans that went to ZCTAs with more than 50% non-Hispanic white population, rural: 18,083; average loan amount: \$74,463.32; median loan amount: \$20,833; number of PPP loans that went to ZCTAs with more than 50% non-Hispanic white population, urban: 93,973; average loan amount: \$92,029.39; median loan amount: \$20,833
 
 ```{r}
 # zcta with > 50% non-Hispanic white population grouped by rural/urban
