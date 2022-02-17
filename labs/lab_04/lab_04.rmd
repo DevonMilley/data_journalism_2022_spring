@@ -104,45 +104,88 @@ maryland_ppp_with_naics_and_demographics %>%
 ```
 
 **Q2** What are the top industries (using the NAICS title) with the most PPP applications in Maryland where the loan amount is more than $150,000?
-**A2** [write your answer here]
+**A2** full-service restaurants, offices of physicians (except mental health specialists), plumbing, heating, and air conditioning contractors, offices of dentists and commercial and institutional building construction
 
 ```{r}
 # Write the code to produce your answer here
-
+maryland_ppp_with_naics_and_demographics %>% 
+  filter(amount > 150000) %>% 
+  group_by(title) %>% 
+  summarise(
+    count = n()
+  ) %>% 
+  arrange(desc(count))
 ```
 
 **Q3** Which Maryland zip code with at least 20 percent non-Hispanic Asian population had the largest sum of PPP loans? Also show the number (count) of loans.
-**A3** [write your answer here]
+**A3** 20850
 
 ```{r}
 # Write the code to produce your answer here
-
+maryland_ppp_with_naics_and_demographics %>% 
+  filter(PNHA >= 20) %>% 
+  group_by(zip5) %>% 
+  summarise(
+    count= n(),
+    total_loan_amount = sum(amount)
+  ) %>% 
+    arrange(desc(total_loan_amount))
 ```
 
 **Q4** Which Maryland zip code had the largest sum of loans where the reported race of the applicant was "Asian", and what is the percentage of non-Hispanic Asian population in that zip code? Also show the number (count) of loans.
-**A4** [write your answer here]
+**A4** 20850, percentage of non-Hispanic Asian population: 23.5%
 
 ```{r}
 # Write the code to produce your answer here
-
+maryland_ppp_with_naics_and_demographics %>% 
+  filter(race=="Asian") %>% 
+  group_by(zip5) %>% 
+  summarise(
+    count = n(),
+    total_loan_amount = sum(amount),
+    PNHA
+  ) %>% 
+arrange(desc(total_loan_amount))
 ```
 
 **Q5** What might explain why 20850 has a significant Asian population (23.5%) and only 240 of the 3,186 loans (7.5%) are to Asian applicants?
-**A5** [write your answer here]
+**A5** It's possilbe that not many Asian-owned businesses applied for PPP loans despite there being a large Asian population in that zip code.
 
 
 **Q6** Check to see if any Maryland zip codes that have loans where the PPP data lists the applicant as being Asian BUT are located in a zip code that does not appear to have Asian population according to the ZCTA data. How many loans do they have and what is the total amount? Take a look at these zip codes - what could explain this?
-**A6** [write your answer here]
+**A6** There are three zip codes that appear to have applicants who listed their race as Asian but are located in a zip code that do not have an Asian population. In total, there are 13 applicants that meet that criteria. The total amount of their loans is \$7,253,408. It's possible this happened because the applicants listed the wrong zip code.
 
 ```{r}
 # Write the code to produce your answer here
+maryland_ppp_with_naics_and_demographics %>% 
+  filter(race=="Asian" & NHA== 0) %>% 
+  group_by(zip5) %>% 
+  summarise(
+    count = n(),
+    total_loan_amount = sum(amount)
+  )
 
+maryland_ppp_with_naics_and_demographics %>% 
+  filter(race=="Asian" & NHA=="0") %>% 
+  summarise(
+    count = n(),
+    total_loan_amount = sum(amount)
+  )
 ```
 
 **Q7** How many industries have exactly one loan in the data (hint: you can filter _after_ using `summarise` on any totals you create). From a newsworthiness standpoint, which of these is most worthy of further exploration, and why?
-**A7** [write your answer here]
+**A7** There are 44 industries with only one loan in the data. When I first looked at this data, I thought it was interesting that only one junior college in Maryland received a PPP loan when there are probably more, and small colleges would seem like a good candidate to apply for PPP loans. When I looked up the business, however, I found it even more interesting that it is a dentist office, not a junior college. So zero junior colleges in Maryland received PPP loans, and this dentist business either filled out the loan application wrong, or the SBA messed up its data collection somehow. 
 
 ```{r}
 # Write the code to produce your answer here
+maryland_ppp_with_naics_and_demographics %>% 
+  group_by(title) %>% 
+  summarise(
+    count = n()
+  ) %>% 
+  filter(count == 1)
+
+maryland_ppp_with_naics_and_demographics %>% 
+  filter(title == "Junior Colleges")
 
 ```
