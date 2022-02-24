@@ -140,7 +140,7 @@ wv_loans_kanawha_with_naics %>%
 
 **Q4.** What are your two best hypotheses, which you'd need to confirm with reporting and further analysis, that explain why that industry is at the top of the list?
 
-**A4.**
+**A4.** hypothesis one: There is a federal district court in Charleston, so there are probably a lot of lawyers in Charleston. hypothesis two: West Virginia only has one law school, and Charleston is the capital of West Virginia, so that's where all the government stuff happens. Becuase that's where the state's government is, it makes sense that there are a lot of lawyers in Charleston.
 
 **Q5.** Start with a dataframe of loans to all businesses in the city and industry that answered question 3. Answer the following questions:
 * What is the name of the business that got the highest approved loan amount?
