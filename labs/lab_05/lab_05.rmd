@@ -166,4 +166,4 @@ wv_loans_kanawha_with_naics %>%
 * How many jobs does the data say were retained? 225
 * Is there a difference between the business' name in the PPP data and the name its customers know it by? If so, what is that name? The names are the same
 * How many locations does this business have? According to its website, this law firm has 10 offices in six states and Washington D.C.
-* Did one of its locations close during the pandemic, either before or after it got the loan?
+* Did one of its locations close during the pandemic, either before or after it got the loan? I cannot find any information or news about a firm closing during the pandemic.
