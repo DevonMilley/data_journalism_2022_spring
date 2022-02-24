@@ -64,14 +64,28 @@ Then export the data from Open Refine, and move it to the proper folder.
 Next, load it in the codeblock below, assigning it to an appropriate variable name.
 
 Then answer these questions:
-* What is the street address in this data that has the most loans?
-* How many loans are there at that street address?
-* What are the names of the businesses at that address?
+* What is the street address in this data that has the most loans? 126 E Burke St
+* How many loans are there at that street address? 6
+* What are the names of the businesses at that address? Drew Holdings LLC; Brix27, LCC; Abraham Ashton; Hub Co-Op, LLC; Hub Co-Op, LLC; Ronin Properties, LLC 
 
 **A1.**
 
 ```{r}
+cleaned_wv_zip_25401_loans <- read_csv("data/zip-25401-loan-sample-csv.csv")
 
+cleaned_wv_zip_25401_loans %>% 
+  group_by(address) %>% 
+  summarise(
+    count = n()
+  ) %>% 
+  arrange(desc(count))
+
+cleaned_wv_zip_25401_loans %>% 
+  filter(address == "126 E Burke St") %>% 
+  summarise(
+    name,
+    address
+  )
 ```
 
 **Q2.** Do some web research on the businesses that answered question 1.  
@@ -80,7 +94,7 @@ Google the street address.  Google the business names and search for their corpo
 
 Based on your research, does it seem suspicious that this collection of businesses all got loans using the same address? Why or why not. Use specific facts identified in your research to support your position.
 
-**A2.**
+**A2.** After researching the address, the building that comes up is called The Hub, an office space rental agency. This information suggests it's not weird or suspicious that multiple businesses share one address if they're all renting office space in this building. The Hub Co-Op is the company that owns the building. According to the loan data, The Hub applied for two separate loans, a year apart. Drew Holdings is a one-employee real estate company that was founded in 2017. The pages on Drew Holdings' website look mostly blank. Brix LLC is a specialty foods store that was also founded in 2017. The address listed on their website is different from the one in the PPP loan data. Abraham Ashton is a self-employed lawyer, so it would make sense for him to rent office space from The Hub. Ronin Properties LLC is a real estate company founded in 2017. According to OpenCorporates.com, Abraham Ashton — the self-employed lawyer — is one of the organizers of Ronin Properties. 
 
 **Q3.** Start by using the West Virginia slice of the PPP loan data that you loaded at the start of the lab to create a subset of PPP loans in West Virginia's second largest county (which you can find in wv_population_county). And then use that table you created to answer the following questions:
 
@@ -91,15 +105,37 @@ Requirement: you MUST export a dataframe of PPP loans from R Studio at some poin
 
 ```{r}
 # write_csv accepts 2 arguments: the dataframe and the path to the file you write out
-write_csv(wv_population_county, "data\wv_population_county.csv")
+wv_second_largest_county_loans <- wv_ppp_loans %>% 
+  filter(project_county_name == "KANAWHA")
+
+write_csv(wv_second_largest_county_loans, "data/wv_second_largest_county_loans.csv")
+ #wv_pop_by_county %>% 
+  #arrange(desc(population_2019))
 ```
 
 Guidance: there are a lot of steps you'll need to take to answer this question. You may find it helpful to write out in English what you plan to do step-by-step before you start writing code.   
 
-**A3.**
+**A3.** city with highest number of loans: Charleston; industry with the most loans in Charleston: Offices of Lawyers
 
 ```{r}
+cleaned_wv_second_largest_city <- read_csv("data/wv-second-largest-county-loans-csv.csv")
 
+cleaned_wv_second_largest_city %>% 
+  group_by(city) %>% 
+  summarise(
+    count = n()
+  ) %>% 
+  arrange(desc(count))
+
+wv_loans_kanawha_with_naics <- cleaned_wv_second_largest_city %>% left_join(naics_codes, by=c("naics_code"="naics_code"))
+
+wv_loans_kanawha_with_naics %>%  
+ filter(city == "Charleston") %>% 
+  group_by(title) %>% 
+  summarise(
+    count = n()
+  ) %>% 
+  arrange(desc(count))
 ```
 
 **Q4.** What are your two best hypotheses, which you'd need to confirm with reporting and further analysis, that explain why that industry is at the top of the list?
