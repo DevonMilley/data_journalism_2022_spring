@@ -149,4 +149,4 @@ domestic_migration %>%
 ```
 
 **Q7** How would you describe this data? Is there a county or region that stands out, and why?
-**A7** There is more positive domestic migration than positive international migration. This could be an example of trends of people moving out of cities.
+**A7** There is more positive domestic migration than positive international migration.The cities definitely have more positive migration that rural areas.
