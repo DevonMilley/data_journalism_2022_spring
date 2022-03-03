@@ -85,7 +85,7 @@ international_migration %>%
 **A2** The data from A1 shows the percentage of international migration to and from Maryland from 2010 to 2019. In the Suburban Washington Region, there was a 62.84% increase in international migration to that area.
 
 **Q3** Which region & jurisdiction had the largest percentage change (either negative or positive) for international migration between July 2018 and July 2017? The formula for percentage change is easy to remember: (New-Old)/Old.
-**A3** Southern Maryland Region, -58.46%
+**A3** region: Southern Maryland Region, -58.46%; county: Calvert: -76.92%
 
 ```{r}
 # Write the code to produce your answer here
@@ -124,24 +124,29 @@ Add a column for the type of migration ("domestic") and populate it:
 
 ```{r}
 # Write the code to add the column here
+domestic_migration <- domestic_migration %>% 
+  mutate(migration_type = "domestic")
 ```
 
 ## Answer questions
 **Q5** Which Maryland individual jurisdiction saw the largest net decrease in domestic migration overall?
-**A5** [write your answer here]
+**A5** Suburban Washington Region
 
 ```{r}
 # Write the code to produce your answer here
-
+domestic_migration  %>% 
+  arrange(total)
 ```
 
 **Q6** How many regions & jurisdictions had net positive migration for July 2017, July 2018 and July 2019 (not just individually but all three together)?
-**A6** [write your answer here]
+**A6** 45 regions/jurisdictions
 
 ```{r}
 # Write the code to produce your answer here
-
+domestic_migration %>% 
+  filter(July_2017 >= 0 & July_2018 >= 0 & July_2019 >= 0) %>% 
+  arrange(desc(total))
 ```
 
 **Q7** How would you describe this data? Is there a county or region that stands out, and why?
-**A7** [write your answer here]
+**A7** There is more positive domestic migration than positive international migration. This could be an example of trends of people moving out of cities.
