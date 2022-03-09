@@ -40,7 +40,7 @@ Let's suppose we can't find a table like that for download, but we do see a vers
 
 ### Task 2: Go to the web page linked above
 **Task** Visit the web page linked above. Briefly describe what you see there.
-**Answer** 
+**Answer**I see a page about employment statistics, with many tables breaking down the different employment industries.
 
 ### Task 3: Load image
 **Task** Run the following code to display an image showing what you should see on the web page.
@@ -78,7 +78,7 @@ In our web browser, if we right-click anywhere on the page and select "view sour
 
 ### Task 3: View source
 **Task** Follow the directions in the previous paragraph. Briefly describe what you see there.
-**Answer**
+**Answer** I see lots of HTML code.
 
 Here's a picture of what some of the source code looks like.
 
