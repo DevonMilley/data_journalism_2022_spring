@@ -31,43 +31,85 @@ library(janitor)
 
 
 Q1. How many individual cases has the U.S. Department of Justice filed against people accused of fraud related to the PPP or EIDL loan program, according to the DOJ website listing those cases: https://www.justice.gov/criminal-fraud/cares-act-fraud?  An example of one case that appears on this page is "U.S. v. Richard Ayvazyan et al". To answer this question, you will need to use rvest to scrape the data on this single webpage into a dataframe that lists only case names. Hint: you will need to make use of html_elements() and html_text() -- a function that extracts text inside of an html tag -- for this.
-A1. 101 cases
+A1. 100 cases
 
 ```{r}
 doj_url <- "https://www.justice.gov/criminal-fraud/cares-act-fraud"
 
 fraud_cases <- doj_url %>% 
   read_html() %>% 
-  html_elements('ul li b') %>%
+  html_elements('li b') %>%
   html_text()
 
-df_fraud_cases <- as_tibble(fraud_cases)
+df_fraud_cases <- as_tibble(fraud_cases) %>% 
+  distinct()
 ```
 
 Q2. In how many individual judicial districts has the U.S. Department of Justice filed cases against people accused of fraud related to the PPP or EIDL loan program, according to the DOJ website listing those cases: https://www.justice.gov/criminal-fraud/cares-act-fraud?  Note: an example of a judicial district is "Southern District of Florida". You will need to use rvest scrape the data on this single webpage into a dataframe.
-A2.
+A2. 31 judicial districts
 
 ```{r}
+doj_url <- "https://www.justice.gov/criminal-fraud/cares-act-fraud"
 
+fraud_districts <- doj_url %>% 
+  read_html() %>% 
+  html_elements('b i') %>% 
+  html_text()
+
+df_fraud_districts <- as_tibble(fraud_districts) %>% 
+  distinct()
 ```
 
 Q4. The website (https://www.justice.gov/criminal-fraud/cares-act-fraud) shows that the DOJ filed more cases in the Southern District of Florida than in any other district. One of those cases was filed against someone named "Diamond Blue Smith". Who is Smith, and what was he accused of, according to the criminal complaint? If you were an editor, would you have assigned a reporter to write a story about this case when the complaint was filed in court? Why or why not?
-A4.
+A4. Diamond Blue Smith owns two companies, Throwbackjerseys.com and Blue Star Records. He and others planned at least 90 fraudulent capstone applications. Smith was charged with wire fraud, bank fraud and attempt and conspiracy to commit wire fraud and bank fraud. As an editor, I would have sent a reporter to cover this case because the complaint says Smith's scheme would fraud millions of dollars through the PPP loans.
 
 Q5. In what percentage of all judicial districts has the U.S. Department of Justice filed cases cases against people accused of fraud related to the PPP or EIDL loan program, according to the DOJ website listing those cases: https://www.justice.gov/criminal-fraud/cares-act-fraud? In answering this question, you should also produce a list of judicial districts where DOJ has NOT filed a case, according to this site.  Note: to answer this question, you will need to scrape a table of all district courts on this up-to-date Wikipedia page under the heading "Active Courts": https://en.wikipedia.org/wiki/List_of_United_States_district_and_territorial_courts  
-A5.
+A5. 28.72%
 
 
 ```{r}
+active_courts_url <- "https://en.m.wikipedia.org/wiki/List_of_United_States_district_and_territorial_courts"
+
+active_courts <- active_courts_url %>% 
+  read_html() %>% 
+  html_element(xpath = '//*[@class="wikitable sortable"]') %>%
+  html_table() %>% 
+  select("Region")
+
+district_courts_and_active_courts <- anti_join(active_courts, df_fraud_districts, by=c("Region" = "value")) %>% 
+  distinct()
+
+district_courts_and_active_courts %>% 
+  summarise(
+    percent = (nrow(district_courts_and_active_courts)/nrow(active_courts))*100
+  )
 
 ```
 Q6. What might explain why, according to this site, the DOJ has filed PPP-related fraud cases in less than half of the country's judicial districts?
-A6.
+A6. The website said it is looking for the most "culpable domestic and international criminal actors," so the DOJ is looking for the worst offenders. There are probably fewer really bad offenders than there are smaaller offenders, so it makes sense that they've found this small group of big offenders in less than half the country.  
 
 Q7. Which state had the most approved PPP loans per 100,000 population? [This web page](https://dwillis.github.io/jour472files/ppp_scraping_example/index.html) has links to 52 individual web pages, one for each state (plus Washington, D.C. and Puerto Rico). Each of those web pages contains a one-row html table that has the name of the state, the number of approved loans, and the 2019 population. Here's an example for [Alabama](https://dwillis.github.io/jour472files/ppp_scraping_example/states/alabama.html). You'll need to loop over the individual state urls, scrape each individual page and combine the information on each page into a single dataframe to answer this question. Don't forget to calculation the loans per 100,000.
 A7.
 ```{r}
+state_loans_url <- "https://dwillis.github.io/jour472files/ppp_scraping_example/index.html"
 
+results <- tibble()
+
+state_loans <- state_loans_url %>% 
+  read_html() %>% 
+  html_element('table') %>%
+  html_table()
+
+for(row_number in 1:nrow(state_loans)) {
+  each_row_df <- state_loans %>%
+      slice(row_number)
+  
+  url <- each_row_df$url
+  
+  
+  
+}
+  
 
 
 ```
