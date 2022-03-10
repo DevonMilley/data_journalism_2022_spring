@@ -1,7 +1,7 @@
 ---
 title: "lab_07"
-author: "sean mussenden"
-date: "8/25/2021"
+author: "Devon Milley"
+date: "3/10/2022"
 output: html_document
 ---
 
@@ -22,17 +22,26 @@ When you are finished, commit changes and push to your personal GitHub repo, the
 ```{r}
 # Turn off scientific notation
 options(scipen=999)
-
+library(rvest)
+library(tidyverse)
+library(janitor)
 # Load the tidyverse,rvest,janitor
 
 ```
 
 
 Q1. How many individual cases has the U.S. Department of Justice filed against people accused of fraud related to the PPP or EIDL loan program, according to the DOJ website listing those cases: https://www.justice.gov/criminal-fraud/cares-act-fraud?  An example of one case that appears on this page is "U.S. v. Richard Ayvazyan et al". To answer this question, you will need to use rvest to scrape the data on this single webpage into a dataframe that lists only case names. Hint: you will need to make use of html_elements() and html_text() -- a function that extracts text inside of an html tag -- for this.
-A1.
+A1. 101 cases
 
 ```{r}
+doj_url <- "https://www.justice.gov/criminal-fraud/cares-act-fraud"
 
+fraud_cases <- doj_url %>% 
+  read_html() %>% 
+  html_elements('ul li b') %>%
+  html_text()
+
+df_fraud_cases <- as_tibble(fraud_cases)
 ```
 
 Q2. In how many individual judicial districts has the U.S. Department of Justice filed cases against people accused of fraud related to the PPP or EIDL loan program, according to the DOJ website listing those cases: https://www.justice.gov/criminal-fraud/cares-act-fraud?  Note: an example of a judicial district is "Southern District of Florida". You will need to use rvest scrape the data on this single webpage into a dataframe.
