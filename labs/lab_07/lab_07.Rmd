@@ -93,11 +93,11 @@ A7.
 ```{r}
 state_loans_url <- "https://dwillis.github.io/jour472files/ppp_scraping_example/index.html"
 
-results <- tibble()
+all_state_loans <- tibble()
 
 state_loans <- state_loans_url %>% 
   read_html() %>% 
-  html_element('table') %>%
+  html_element(xpath = '//*[@class="table table-striped table-hover"]') %>%
   html_table()
 
 for(row_number in 1:nrow(state_loans)) {
@@ -106,17 +106,14 @@ for(row_number in 1:nrow(state_loans)) {
   
   url <- each_row_df$url
   
-  xpath_state_loans_table <- paste0('//*[@class="table table-striped table-hover"]')
-  
   state_loans_and_pop <- url %>% 
     read_html() %>% 
     html_element(xpath = '//*[@class="table table-striped table-hover"]') %>% 
-    html_table() 
+    html_table() %>% 
+    distinct()
 
-  
-  
-  
-  
+  all_state_loans <- all_state_loans %>%
+      bind_rows(state_loans_and_pop) 
 }
   
 ```
