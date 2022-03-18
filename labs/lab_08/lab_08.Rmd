@@ -154,15 +154,17 @@ july_ppp_with_percentage_black_pop %>%
 july_ppp_with_percentage_black_pop %>%
   group_by(zip5) %>%
   summarise(
-    count = n(),
+    count = n()
   ) %>% 
   arrange(desc(count)) %>% 
   top_n(10, count)
 
+
+
 ```
 
 **Q6** How would you describe to an editor the top 10 zip codes with the most removed applications in terms of Black population? Where are they located, and what do they have in common? Are there any zip codes that seem different, and if so why?
-**A6** 
+**A6** Almost all the zip codes — except one in Atlanta — are located in Chicago, which has one of the highest Black populations in the country. Atlanta has a pretty high Black population too.
 
 **Q7** What other columns from the PPP data could be useful in reporting on what happened to these removed loans?
-**A7**
+**A7** processing_method, loan status, initial_approval_amount, date_approved
