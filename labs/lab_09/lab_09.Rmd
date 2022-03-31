@@ -18,6 +18,8 @@ knitr::opts_chunk$set(echo = TRUE)
 **Task** Create a codeblock and load appropriate packages and settings for this lab.
 
 ```{r}
+install.packages("tidycensus")
+library(tidycensus)
 library(tidyverse)
 library(ggthemes)
 ```
@@ -72,7 +74,7 @@ Basically, your chart should look like this image, which will appear when you ru
 ```{r}
 knitr::include_graphics(rep("images/chart_1.png"))
 ```
-**A1.** 
+**A1.** April 28, 2020
 
 **Q2.** What are the top 10 states that got the most PPP loans per 100,000 people? You MUST do the following things when answering this question:
 
@@ -81,8 +83,43 @@ knitr::include_graphics(rep("images/chart_1.png"))
 * Use the tidycensus API to get a table of total population by state from the American Community Survey (ACS). To do this, you'll use use the alphanumeric variable for total population, which has the following "label" and "concept": "Estimate!!Total:" and "SEX BY AGE".  
 * Use ggplot to make a horizontal bar chart that shows the top 10 states, with the length of the bar determined by the state's total PPP loans per 100,000 people. Give it an appropriate title, source, and x and y axis titles. 
 * Make the bars on the chart blue! I didn't show you how to do this in the prelab, so do some web sleuthing to figure it out.  
+```{r}
+total_ppp_loans_by_state <- read_csv("data/state_ppp_all.csv")
+```
+```{r echo=FALSE}
+census_api_key("b83f426335eaf420358cb85a8df817d0f82924c5", install=TRUE)
+```
 
-**A2.** 
+```{r}
+state_pops <- get_acs(geography = "state",
+              variables = c(population = "B01001_001"),
+              year=2019)
+```
+```{r}
+states_ppp_and_pop <- state_pops %>% left_join(total_ppp_loans_by_state, by=c("NAME"="state"))
+
+top_ten_states_ppp <- states_ppp_and_pop %>% 
+  group_by(NAME) %>% 
+  summarise(
+    ppp_loans_per_100000 = (total_ppp_loans/estimate)*100000
+  ) %>% 
+  head(10)
+```
+
+```{r}
+top_ten_states_ppp %>% 
+  ggplot() +
+  geom_bar(aes(x=reorder(NAME,ppp_loans_per_100000), weight=ppp_loans_per_100000), fill="blue") +
+  coord_flip() +
+  labs(
+    title="Top 10 states with the most PPP loans per 100,000 people\n",
+    x = "State\n",
+    y = "\nPPP loans per 100,000 people",
+    caption = "source: SBA PPP loan database, American Community Survey"
+    
+  )
+```
+**A2.** Florida, District of Columbia, Alabama, Arkansas, Colorado, Connecticut, California, Alaska, Delaware, Arizona
 
 **Q3.**  A scatterplot is a type of chart that helps us see relationships between two variables. One variable goes on the x axis, the other on the y axis.  For each row/observation in our data, a scatterplot puts a circle (or a "point") where the two variables intersect on a grid. 
 
