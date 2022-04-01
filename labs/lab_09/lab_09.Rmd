@@ -18,7 +18,6 @@ knitr::opts_chunk$set(echo = TRUE)
 **Task** Create a codeblock and load appropriate packages and settings for this lab.
 
 ```{r}
-install.packages("tidycensus")
 library(tidycensus)
 library(tidyverse)
 library(ggthemes)
@@ -87,7 +86,7 @@ knitr::include_graphics(rep("images/chart_1.png"))
 total_ppp_loans_by_state <- read_csv("data/state_ppp_all.csv")
 ```
 ```{r echo=FALSE}
-census_api_key("b83f426335eaf420358cb85a8df817d0f82924c5", install=TRUE)
+census_api_key("b83f426335eaf420358cb85a8df817d0f82924c5")
 ```
 
 ```{r}
@@ -143,11 +142,25 @@ To answer those questions, make a codeblock and do the following:
 
 ```{r}
 wv_ppp_less_than_25000 <- wv_ppp %>% 
-  filter(amount < 25000) %>%
-
+  filter(amount < 25000) %>% 
+  mutate(
+    forgiveness_amount = if_else(
+      is.na(forgiveness_amount), 0, forgiveness_amount
+      )
+    )
 ```
 
+```{r}
+wv_ppp_less_than_25000 %>% 
+  ggplot() +
+  geom_point(aes(x=amount, y=forgiveness_amount), size=1)
+```
 **A3.**  
-
+Were there a lot of people who had their loans fully forgiven?
+yes, the solid line of points going through the graph indicates many people had their loans fully forgiven
+Were there a lot of people who didn't have their loans forgiven?
+yes, the solid, horizontal line at the bottom of the scatterplot indicates many people didn't have their loans forgiven
+Were there a lot of people who had some of the loan forgiven? 
+yes, the individual points show who had their loans partially forgiven. It doesn't look to be as many as those who had their loans either fully forgiven or not forgiven at all
 
 -30-
