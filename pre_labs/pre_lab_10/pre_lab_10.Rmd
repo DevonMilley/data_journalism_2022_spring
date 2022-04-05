@@ -135,6 +135,7 @@ Looks good, but there are two issues: Datawrapper expects a 5-digit FIPS code (t
 
 **Task** Generate full FIPS codes
 **Answer** Describe the contents of the new `fips_code` column
+state code + county code
 
 ```{r}
 md_fips <- md_fips %>% mutate(fips_code = str_c(state_code, county_code))
@@ -158,6 +159,7 @@ md_fips <- md_fips %>% mutate(match_county = str_to_upper(county)) %>%
 
 **Task** Now we'll join `md_counties` and `md_fips` together using our new `match_county` column:
 **Answer** Describe here what you see in `md_counties_with_fips`
+a dataframe of the number approved applications by county in maryland
 
 ```{r}
 md_counties_with_fips <- md_counties %>%
@@ -192,7 +194,7 @@ knitr::include_graphics(rep("images/ppp_datawrapper9.png"))
 You'll see that the map currently is of the whole nation, and we only have Maryland data. Let's fix that.
 
 **Task** Look for "Hide regions without data" under Appearance, and click the slider icon to enable that feature. You should see a map zoomed into Maryland with some counties in various colors.
-**Answer** Describe the changes from the previous map
+**Answer** It zooms in to just Maryland
 
 But it's a little rough visually, so let's clean that up.
 
@@ -201,9 +203,9 @@ But it's a little rough visually, so let's clean that up.
 That's better, but check out the tooltip by hovering over a county. It's not super helpful. Let's change the tooltip behavior to show the county name and a better-formatted number.
 
 **Task** Click the "Customize tooltips" button so it expands down. Change {{ fips }} to {{ county }} and {{ count }} to {{ FORMAT(count, "0,0.[00]")}}
-**Answer** Describe the changes from the previous map
+**Answer** the fips code became the county name, andn the count was formatted to include commas
 
 Ok, that looks better. Let's publish!
 
 **Task** Click the "Proceed" button until you get to the "Publish & Embed" tab, then click "Publish Now". Copy the URL and paste it below.
-**Answer** Put the URL of your map here.
+**Answer** https://datawrapper.dwcdn.net/znwFe/1/
