@@ -1,7 +1,7 @@
 ---
 title: "pre_lab_10.Rmd"
-author: "derek willis"
-date: "9/23/2021"
+author: "Devon Milley"
+date: "4/5/2022"
 output: html_document
 ---
 
@@ -83,7 +83,7 @@ knitr::include_graphics(rep("images/ppp_datawrapper7.png"))
 
 Some publication systems allow for the embedding of HTML into a post or a story. Some don't. The only way to know is to ask someone at your publication. Every publication system on the planet, though, can publish an image. So there's always a way to export your chart as a PNG file, which you can upload like any photo.
 
-**Answer** Copy the url of the graphic you published here.
+**Answer** https://datawrapper.dwcdn.net/4S04x/1/
 
 ### Task 8: Make a Choropleth Map
 
@@ -96,7 +96,7 @@ maryland_ppp <- read_rds("data/pre_lab_10.rds")
 ```
 
 **Task** First, we'll create a dataframe that has county (jurisdiction) level counts of approved applications. Run the following code to do that. There are some mistakes in the data, so we're going to remove those with a filter after doing the counting.
-**Answer** Describe what the code below is doing and the output.
+**Answer** The code creates a dataframe called md_counties that counts how many loans are in each Maryland county (grouping).
 
 ```{r}
 md_counties <- maryland_ppp %>%
@@ -105,7 +105,7 @@ md_counties <- maryland_ppp %>%
 ```
 
 **Task** Let's deal with those seemingly extraneous records that don't appear to be MD PPP applications:
-**Answer** Describe what the code below is doing and the output.
+**Answer** This code does the same thing as the above code block and then filters out counties by only selecting ones that have more than 6 loans
 
 ```{r}
 md_counties <- maryland_ppp %>%
