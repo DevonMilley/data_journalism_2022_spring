@@ -26,6 +26,7 @@ library(janitor)
 library(lubridate)
 library(ggrepel)
 library(sf)
+library(tidyr)
 ```
 
 ## Questions
@@ -57,30 +58,26 @@ wvu_crime_logs <- wvu_crime_logs %>%
   arrange(desc(date))
 
 latest_wvu_crime_logs <- wvu_crime_logs %>% 
-  filter(date == "2022-04-19")
+  head(1)
 ```
 
 4. Using the first title in that dataframe, find the number of incidents that occurred in the previous 30 days and write out a sentence using paste. The sentence should include the most recent date, the title of the incident and the number of times that kind of incident has occurred in the previous 30 days.
 ```{r}
-latest_date_wvu_crime <- latest_wvu_crime_logs %>% slice(1)
-thirty_days_ago <- wvu_crime_logs %>% filter(title == "VEHICLE ACCIDENT" & date >= latest_date_wvu_crime$date - 30)
+thirty_days_ago <- wvu_crime_logs %>% filter(title == latest_wvu_crime_logs$title & date >= latest_wvu_crime_logs$date - 29)
 ```
 
 
 ```{r}
-sentence <- paste("Since ", format(latest_date_wvu_crime$date, format="%B %d, %Y"), ", ", nrow(thirty_days_ago), " ", tolower(latest_date_wvu_crime$title), "s have occurred in the last 30 days.", sep="")
+sentence <- paste("Since ", format(latest_wvu_crime_logs$date, format="%B %d, %Y"), ", ", nrow(thirty_days_ago), " ", tolower(latest_wvu_crime_logs$title), "s have occurred in the last 30 days.", sep="")
 
-#, " ", direction, " by ", changetext, " percent compared to the week before", sep="")
 sentence
 ```
  
 
 Put your sentence in the answer below, along with one other question you could ask of this data.
 
-**A1.**
-
-```{r}
-```
+**A1.** Since April 21, 2022, 7 suspicious events have occurred in the last 30 days. 
+Another question: How many of each crime happens on a particular day?
 
 **Q2.** Maryland produces a [CSV file](https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv) showing the total number of vaccinations by zip code and -- interestingly -- it includes non-Maryland zip codes (as well as some zip codes that seem to be bad data). write a script that reads the CSV file, making the columns more readable and adding today's date. Then output the top 25 Maryland zip codes and top 25 non-Maryland zip codes based on number of people fully vaccinated, and write both dataframes out to CSV files, using the following name formats:
 
@@ -94,6 +91,31 @@ To do that, you will need to:
 1. Get rid of rows that do not have data for fully vaccinated people
 2. Remove any rows where the zip code is less than five digits (there are several ways you could do this).
 3. Figure out the "lowest" and "highest" Maryland zip codes.
+
+```{r}
+vax_by_zip <- read_csv("https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv") %>% 
+  clean_names()
+```
+
+```{r}
+vax_w_date <- vax_by_zip %>% 
+  mutate(
+    date = today()
+  )
+```
+
+```{r}
+cleaned_vax <- vax_w_date %>% 
+  drop_na(fully_vaccinated) %>% 
+  filter(nchar(zip_code) == 5)
+
+```
+
+```{r}
+md_vax <- cleaned_vax %>% 
+  #need to filter for just maryland zip codes
+```
+ 
 
 Google the top 2-3 zip codes from both Maryland and non-Maryland results and describe them in your answer.
 
