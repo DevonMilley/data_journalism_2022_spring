@@ -113,16 +113,31 @@ cleaned_vax <- vax_w_date %>%
 
 ```{r}
 md_vax <- cleaned_vax %>% 
-  #need to filter for just maryland zip codes
+  filter(zip_code >= 20588 & zip_code <= 21930)
+
+non_md_vax <- cleaned_vax %>% 
+  filter(zip_code < 20588 | zip_code > 21930)
+
+top_25_md_zip <- md_vax %>% 
+  arrange(desc(fully_vaccinated)) %>% 
+  head(25)
+
+top_25_non_md_zip <- non_md_vax %>% 
+  arrange(desc(fully_vaccinated)) %>% 
+  head(25)
+```
+
+```{r}
+write_csv(top_25_md_zip, paste("maryland_zips_", Sys.Date(),".csv", sep=""))
+write_csv(top_25_non_md_zip, paste("non_marylandd_zips_", Sys.Date(), ".csv", sep=""))
+
 ```
  
 
 Google the top 2-3 zip codes from both Maryland and non-Maryland results and describe them in your answer.
 
-**A2.**
-
-```{r}
-```
+**A2.** top md zip codes: 20906 (Silver Spring), 20878 (Gaithersburg), 20874 (Darnestown) All three of these zip codes are located in Montgomery County, which is th emost populous county in Maryland.
+top non md zip codes: 20011 (Washington, D.C.), 20002 (Washington, D.C.), 20009 (Washington, D.C.); Washington has lots of government workers who were required to get vaccinated. Because it's also the U.S. capital, it had strict COVID rules/guidelines, including vaccine mandates and required proof of vaccination to enter shops, restaurants, museums and other places.
 
 **Q3.** Maryland has had one of the more successful vaccination rates, but you want to understand where a significant portion of the population remains less than fully vaccinated. Make a dataframe of all Maryland zip codes from the vaccination data you used in Q2 and join it to Maryland zip code population data from the Census API. Calculate the percentage of fully vaccinated for each zip code and then make a map showing the zip codes with less than 50 percent fully vaccinated. Put a blank map with the outline of Maryland counties (which you can get from Tigris) behind it for context. Add a label to the map describing what the data is and include the date from the vaccination data (programmatically, so you can run it every day).
 
