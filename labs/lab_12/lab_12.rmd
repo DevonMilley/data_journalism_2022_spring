@@ -27,6 +27,8 @@ library(lubridate)
 library(ggrepel)
 library(sf)
 library(tidyr)
+library(tidycensus)
+library(tigris)
 ```
 
 ## Questions
@@ -113,10 +115,13 @@ cleaned_vax <- vax_w_date %>%
 
 ```{r}
 md_vax <- cleaned_vax %>% 
-  filter(zip_code >= 20588 & zip_code <= 21930)
+  filter(zip_code >= 20588 & zip_code <= 21930) %>% 
+  distinct()
+
 
 non_md_vax <- cleaned_vax %>% 
-  filter(zip_code < 20588 | zip_code > 21930)
+  filter(zip_code < 20588 | zip_code > 21930) %>% 
+  distinct()
 
 top_25_md_zip <- md_vax %>% 
   arrange(desc(fully_vaccinated)) %>% 
@@ -136,7 +141,7 @@ write_csv(top_25_non_md_zip, paste("non_marylandd_zips_", Sys.Date(), ".csv", se
 
 Google the top 2-3 zip codes from both Maryland and non-Maryland results and describe them in your answer.
 
-**A2.** top md zip codes: 20906 (Silver Spring), 20878 (Gaithersburg), 20874 (Darnestown) All three of these zip codes are located in Montgomery County, which is th emost populous county in Maryland.
+**A2.** top md zip codes: 20906 (Silver Spring), 20878 (Gaithersburg), 20874 (Darnestown) All three of these zip codes are located in Montgomery County, which is the most populous county in Maryland.
 top non md zip codes: 20011 (Washington, D.C.), 20002 (Washington, D.C.), 20009 (Washington, D.C.); Washington has lots of government workers who were required to get vaccinated. Because it's also the U.S. capital, it had strict COVID rules/guidelines, including vaccine mandates and required proof of vaccination to enter shops, restaurants, museums and other places.
 
 **Q3.** Maryland has had one of the more successful vaccination rates, but you want to understand where a significant portion of the population remains less than fully vaccinated. Make a dataframe of all Maryland zip codes from the vaccination data you used in Q2 and join it to Maryland zip code population data from the Census API. Calculate the percentage of fully vaccinated for each zip code and then make a map showing the zip codes with less than 50 percent fully vaccinated. Put a blank map with the outline of Maryland counties (which you can get from Tigris) behind it for context. Add a label to the map describing what the data is and include the date from the vaccination data (programmatically, so you can run it every day).
@@ -145,7 +150,49 @@ You WILL need to ensure that the columns you use to join the two dataframes are 
 
 Describe the output of the map below, and say what you think the most interesting areas are.
 
-**A3.**
+**A3.** The map shows that many of the westernmost zip codes and easternmost zip codes have very low vaccination rates, which makes sense because they are more rural areas with less access to health care. Areas closer to cities like Baltimore and Washington, D.C. have higher vaccination rates. There is one county in western Maryland that has a high vaccination rate despite it being a rural area, whiich I think is interesting. It may be because that's where Frostburg State University is located.
 
 ```{r}
+census_api_key("b83f426335eaf420358cb85a8df817d0f82924c5")
 ```
+
+```{r}
+md_zipcodes <- get_acs(geography="zcta", variables = "B19013_001", state='MD', geometry=TRUE)
+
+md_vax <- md_vax %>% 
+  mutate(
+    zip_code = as.character(zip_code)
+  )  
+
+md_vax_and_zip <- md_vax %>% left_join(md_zipcodes, by=c("zip_code"="GEOID"))
+```
+
+```{r}
+less_than_fifty_vax_md <- md_vax_and_zip %>% 
+  clean_names() %>% 
+  drop_na(name) %>% 
+  mutate(
+    percent_fully_vaccinated = (fully_vaccinated/estimate)*100
+  ) %>% 
+  filter(percent_fully_vaccinated < 50)
+```
+
+```{r}
+counties <- counties() 
+
+md_counties <- counties %>%
+  filter(STATEFP == "24")
+```
+
+```{r}
+
+title <- paste("Maryland zip codes with less than 50% of its population fully vaccinated on ", Sys.Date())
+md_counties %>% 
+ggplot() + 
+  geom_sf(data=less_than_fifty_vax_md, aes(geometry = geometry, fill=percent_fully_vaccinated)) + 
+  theme_minimal() +
+  labs(
+    title=title
+  )
+```
+
