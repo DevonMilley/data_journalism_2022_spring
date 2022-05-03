@@ -291,7 +291,7 @@ Another popular use of text analysis is to measure the sentiment of a word - whe
 
 ### Task 15: Load the bing lexicon and produce sentiments for our 2020 and 2021 unique words
 **Task** Run the following code and describe the results. Do any of the sentiments seem incorrect or counter-intuitive?
-**Answer** It has Trump as positive, maybe taking the word not for a name but for the actual word.most of the sentiments seem correct
+**Answer** It has Trump as positive, maybe taking the word not for a name but for the actual word. It also has the word positive as positive, which probably isn't right. most of the sentiments seem correct
 
 ```{r}
 bing <- get_sentiments("bing")
